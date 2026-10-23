@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML Projects Portfolio – Pavani</title>
+  <meta name="description" content="A curated collection of 15 machine learning projects spanning computer vision, NLP, finance, and classification." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050a14;
+      --bg2: #0a1628;
+      --primary: #6366f1;
+      --primary-glow: #818cf8;
+      --accent: #22d3ee;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --pink: #f472b6;
+      --orange: #fb923c;
+      --yellow: #fbbf24;
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(99,102,241,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(34,211,238,.12) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167,139,250,.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Stars ── */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 80%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 85%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 75%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 15%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 45%, rgba(255,255,255,.2) 0%, transparent 100%),
+        radial-gradient(1px 1px at 65% 90%, rgba(255,255,255,.4) 0%, transparent 100%);
+    }
+
+    /* ── Layout ── */
+    .wrapper { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Hero ── */
+    header {
+      position: relative; padding: 80px 24px 60px;
+      text-align: center; overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(99,102,241,.15); border: 1px solid rgba(99,102,241,.3);
+      border-radius: 100px; padding: 6px 18px; font-size: 13px;
+      color: var(--primary-glow); font-weight: 500; margin-bottom: 28px;
+      animation: fadeInDown .6s ease;
+    }
+
+    .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      background: linear-gradient(135deg, #e2e8f0 30%, var(--primary-glow) 60%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown .7s ease .1s both;
+    }
+
+    .subtitle {
+      margin: 20px auto 0; max-width: 620px;
+      font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+      animation: fadeInDown .8s ease .2s both;
+    }
+
+    .stats-row {
+      display: flex; justify-content: center; gap: 40px; margin-top: 48px; flex-wrap: wrap;
+      animation: fadeInUp .8s ease .3s both;
+    }
+
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--primary-glow), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-label { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+
+    /* ── Filter ── */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      margin: 12px 0 48px; animation: fadeInUp .7s ease .4s both;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--glass-border); background: var(--glass);
+      color: var(--muted); border-radius: 100px; padding: 8px 20px;
+      font-size: .82rem; font-weight: 500; cursor: pointer;
+      transition: all .25s; font-family: inherit;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(99,102,241,.2); border-color: rgba(99,102,241,.5);
+      color: var(--primary-glow); transform: translateY(-1px);
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px; padding-bottom: 80px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 28px;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      cursor: default; position: relative; overflow: hidden;
+      animation: fadeInUp .6s ease both;
+    }
+
+    .card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 0 1px rgba(99,102,241,.25);
+      border-color: rgba(99,102,241,.3);
+    }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+
+    .icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+
+    .card-number {
+      font-family: 'Fira Code', monospace; font-size: .75rem;
+      color: var(--muted); background: rgba(255,255,255,.05);
+      border: 1px solid var(--glass-border); border-radius: 8px;
+      padding: 4px 10px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem; font-weight: 700; color: var(--text);
+      margin-bottom: 10px; line-height: 1.3;
+    }
+
+    .card p {
+      font-size: .875rem; color: var(--muted); line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .tag {
+      font-size: .72rem; font-weight: 500; padding: 4px 12px;
+      border-radius: 100px; border: 1px solid;
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* Tag colors */
+    .tag-cv    { color: #67e8f9; border-color: rgba(103,232,249,.25); background: rgba(103,232,249,.08); }
+    .tag-ml    { color: #a78bfa; border-color: rgba(167,139,250,.25); background: rgba(167,139,250,.08); }
+    .tag-dl    { color: #f9a8d4; border-color: rgba(249,168,212,.25); background: rgba(249,168,212,.08); }
+    .tag-nlp   { color: #86efac; border-color: rgba(134,239,172,.25); background: rgba(134,239,172,.08); }
+    .tag-fin   { color: #fbbf24; border-color: rgba(251,191,36,.25);  background: rgba(251,191,36,.08); }
+    .tag-viz   { color: #fb923c; border-color: rgba(251,146,60,.25);  background: rgba(251,146,60,.08); }
+    .tag-audio { color: #e879f9; border-color: rgba(232,121,249,.25); background: rgba(232,121,249,.08); }
+    .tag-str   { color: #34d399; border-color: rgba(52,211,153,.25);  background: rgba(52,211,153,.08); }
+
+    /* ── Tech badges in card footer ── */
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--glass-border); }
+    .tech-stack { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tech { font-size: .7rem; color: var(--muted); background: rgba(255,255,255,.05); border-radius: 6px; padding: 3px 9px; }
+
+    /* ── Footer ── */
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 40px 24px; border-top: 1px solid var(--glass-border);
+      color: var(--muted); font-size: .85rem;
+    }
+
+    footer span { color: var(--primary-glow); }
+
+    /* ── Animations ── */
+    @keyframes fadeInDown { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes fadeInUp   { from { opacity:0; transform: translateY(24px);  } to { opacity:1; transform: translateY(0); } }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(99,102,241,.4); border-radius: 3px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .stats-row { gap: 24px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* hidden cards for filter */
+    .card.hidden { display: none; }
+  </style>
+</head>
+<body>
+<div class="stars"></div>
+
+<header>
+  <div class="wrapper">
+    <div class="hero-badge"><span class="dot"></span>15 Projects &nbsp;·&nbsp; Machine Learning Portfolio</div>
+    <h1>Machine Learning<br/>Project Showcase</h1>
+    <p class="subtitle">A curated collection spanning computer vision, deep learning, NLP, finance, and audio analysis — built with Python, TensorFlow, scikit-learn, and more.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">15</div><div class="stat-label">Projects</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Domains</div></div>
+      <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Frameworks</div></div>
+      <div class="stat"><div class="stat-num">10</div><div class="stat-label">Notebooks</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrapper">
+  <!-- Filter -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filter('all',this)">All</button>
+    <button class="filter-btn" onclick="filter('cv',this)">Computer Vision</button>
+    <button class="filter-btn" onclick="filter('ml',this)">Machine Learning</button>
+    <button class="filter-btn" onclick="filter('dl',this)">Deep Learning</button>
+    <button class="filter-btn" onclick="filter('nlp',this)">NLP</button>
+    <button class="filter-btn" onclick="filter('fin',this)">Finance</button>
+    <button class="filter-btn" onclick="filter('audio',this)">Audio</button>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="grid" id="grid">
+
+    <!-- 1 -->
+    <div class="card" data-cats="cv dl" style="animation-delay:.05s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(34,211,238,.12)">👁️</div>
+        <span class="card-number">#01</span>
+      </div>
+      <h3>Face, Eye &amp; Smile Detection</h3>
+      <p>Real-time multi-feature detection using Haar Cascade classifiers and OpenCV. Detects faces, open eyes, and smiles simultaneously from a webcam stream.</p>
+      <div class="tags">
+        <span class="tag tag-cv">Computer Vision</span>
+        <span class="tag tag-cv">Real-Time</span>
+        <span class="tag tag-cv">OpenCV</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">OpenCV</span><span class="tech">Haar Cascades</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card" data-cats="dl cv" style="animation-delay:.10s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(52,211,153,.12)">🌿</div>
+        <span class="card-number">#02</span>
+      </div>
+      <h3>Plant Disease Prediction</h3>
+      <p>CNN-based leaf image classifier trained on 87K+ images across 38 disease classes. Deployed as an interactive Streamlit web application for field use.</p>
+      <div class="tags">
+        <span class="tag tag-dl">Deep Learning</span>
+        <span class="tag tag-cv">Image Classification</span>
+        <span class="tag tag-str">Streamlit</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">Keras</span><span class="tech">Streamlit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card" data-cats="dl cv" style="animation-delay:.15s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(251,146,60,.12)">🍎</div>
+        <span class="card-number">#03</span>
+      </div>
+      <h3>Fruit Recognition</h3>
+      <p>Image-based classification of fruit types using convolutional neural networks and image processing techniques to identify different fruit varieties from photos.</p>
+      <div class="tags">
+        <span class="tag tag-dl">Deep Learning</span>
+        <span class="tag tag-cv">Image Classification</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">CNN</span><span class="tech">NumPy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card" data-cats="dl cv" style="animation-delay:.20s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(134,239,172,.12)">🥦</div>
+        <span class="card-number">#04</span>
+      </div>
+      <h3>Fruits &amp; Vegetable Recognition</h3>
+      <p>Extended recognition system covering both fruits and vegetables. Multi-class classification from images to identify produce types using deep learning.</p>
+      <div class="tags">
+        <span class="tag tag-dl">Deep Learning</span>
+        <span class="tag tag-cv">Multi-Class</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">Keras</span><span class="tech">OpenCV</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card" data-cats="cv dl" style="animation-delay:.25s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(167,139,250,.12)">👤</div>
+        <span class="card-number">#05</span>
+      </div>
+      <h3>Human Eye Disease Prediction</h3>
+      <p>Medical imaging system that diagnoses common eye diseases from retinal images. Leverages deep learning to assist clinical diagnosis with high accuracy.</p>
+      <div class="tags">
+        <span class="tag tag-dl">Deep Learning</span>
+        <span class="tag tag-cv">Medical Imaging</span>
+        <span class="tag tag-dl">Healthcare AI</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">CNN</span><span class="tech">Keras</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card" data-cats="cv dl" style="animation-delay:.30s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(249,168,212,.12)">🎯</div>
+        <span class="card-number">#06</span>
+      </div>
+      <h3>Object Detection – YOLOv4</h3>
+      <p>Real-time object detection on images and video streams using YOLOv4. Identifies and localizes multiple objects simultaneously with bounding boxes and confidence scores.</p>
+      <div class="tags">
+        <span class="tag tag-cv">Object Detection</span>
+        <span class="tag tag-dl">YOLO</span>
+        <span class="tag tag-cv">Real-Time</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">OpenCV</span><span class="tech">YOLOv4</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card" data-cats="audio dl" style="animation-delay:.35s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(232,121,249,.12)">🎵</div>
+        <span class="card-number">#07</span>
+      </div>
+      <h3>Music Genre Classification</h3>
+      <p>Classifies audio tracks into 10 genres (blues, jazz, rock, pop, etc.) using Mel spectrograms and CNN. Trained on the GTZAN dataset and deployed via Streamlit.</p>
+      <div class="tags">
+        <span class="tag tag-audio">Audio AI</span>
+        <span class="tag tag-dl">Mel Spectrogram</span>
+        <span class="tag tag-str">Streamlit</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">Librosa</span><span class="tech">Streamlit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card" data-cats="ml" style="animation-delay:.40s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(251,191,36,.12)">💰</div>
+        <span class="card-number">#08</span>
+      </div>
+      <h3>Adult Income Prediction</h3>
+      <p>Binary classification model that predicts whether an individual's income exceeds $50K/yr based on US Census demographic data using various ML algorithms.</p>
+      <div class="tags">
+        <span class="tag tag-ml">Classification</span>
+        <span class="tag tag-ml">Census Data</span>
+        <span class="tag tag-ml">Scikit-learn</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">Scikit-learn</span><span class="tech">Pandas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card" data-cats="ml" style="animation-delay:.45s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(99,102,241,.12)">🚗</div>
+        <span class="card-number">#09</span>
+      </div>
+      <h3>Audi Car Price Prediction</h3>
+      <p>Regression model for predicting Audi used car prices based on features like mileage, year, engine size, and transmission type using ensemble learning methods.</p>
+      <div class="tags">
+        <span class="tag tag-ml">Regression</span>
+        <span class="tag tag-ml">Price Prediction</span>
+        <span class="tag tag-ml">EDA</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">Scikit-learn</span><span class="tech">Seaborn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card" data-cats="ml" style="animation-delay:.50s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(239,68,68,.12)">❤️</div>
+        <span class="card-number">#10</span>
+      </div>
+      <h3>Heart Failure Prediction</h3>
+      <p>Clinical risk prediction model for heart failure based on 12 medical features. Identifies high-risk patients using multiple classifiers with ROC-AUC evaluation.</p>
+      <div class="tags">
+        <span class="tag tag-ml">Healthcare AI</span>
+        <span class="tag tag-ml">Classification</span>
+        <span class="tag tag-ml">Medical</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">Scikit-learn</span><span class="tech">Matplotlib</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="card" data-cats="nlp dl" style="animation-delay:.55s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(134,239,172,.12)">💬</div>
+        <span class="card-number">#11</span>
+      </div>
+      <h3>Movie Review Sentiment Analysis</h3>
+      <p>NLP pipeline that classifies movie review text as positive or negative sentiment. Implements LSTM/RNN with text embeddings for sequence understanding.</p>
+      <div class="tags">
+        <span class="tag tag-nlp">NLP</span>
+        <span class="tag tag-dl">LSTM</span>
+        <span class="tag tag-nlp">Sentiment</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">TensorFlow</span><span class="tech">NLTK</span><span class="tech">Keras</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="card" data-cats="fin ml" style="animation-delay:.60s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(251,191,36,.12)">📈</div>
+        <span class="card-number">#12</span>
+      </div>
+      <h3>Stock Price Predictor</h3>
+      <p>Time-series forecasting model for stock prices using historical market data. Applies LSTM/RNN networks or classical regression to predict future price movements.</p>
+      <div class="tags">
+        <span class="tag tag-fin">Finance</span>
+        <span class="tag tag-ml">Time Series</span>
+        <span class="tag tag-dl">LSTM</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">TensorFlow</span><span class="tech">yfinance</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="card" data-cats="fin ml" style="animation-delay:.65s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(52,211,153,.12)">💹</div>
+        <span class="card-number">#13</span>
+      </div>
+      <h3>Python for Finance</h3>
+      <p>Quantitative finance toolkit with portfolio analysis, risk metrics (VaR, Sharpe ratio), technical indicator computation, and algorithmic trading strategy backtesting.</p>
+      <div class="tags">
+        <span class="tag tag-fin">Finance</span>
+        <span class="tag tag-fin">Quant</span>
+        <span class="tag tag-viz">Visualization</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Pandas</span><span class="tech">NumPy</span><span class="tech">Matplotlib</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="card" data-cats="viz ml" style="animation-delay:.70s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(251,146,60,.12)">🌦️</div>
+        <span class="card-number">#14</span>
+      </div>
+      <h3>IVT Data Visualization (NetCDF)</h3>
+      <p>Scientific data visualization of Integrated Vapor Transport atmospheric data from NetCDF files, revealing weather patterns and moisture transport pathways.</p>
+      <div class="tags">
+        <span class="tag tag-viz">Visualization</span>
+        <span class="tag tag-viz">Geospatial</span>
+        <span class="tag tag-ml">Scientific</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Python</span><span class="tech">NetCDF4</span><span class="tech">Matplotlib</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="card" data-cats="viz ml" style="animation-delay:.75s">
+      <div class="card-top">
+        <div class="icon-wrap" style="background:rgba(99,102,241,.12)">⛅</div>
+        <span class="card-number">#15</span>
+      </div>
+      <h3>Weather Dataset Analysis</h3>
+      <p>Exploratory data analysis and visualization of weather datasets to identify seasonal patterns, correlations, and anomalies in temperature, humidity, and precipitation.</p>
+      <div class="tags">
+        <span class="tag tag-ml">EDA</span>
+        <span class="tag tag-viz">Visualization</span>
+        <span class="tag tag-ml">Forecasting</span>
+      </div>
+      <div class="card-footer">
+        <div class="tech-stack">
+          <span class="tech">Pandas</span><span class="tech">Seaborn</span><span class="tech">Matplotlib</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</main>
+
+<footer>
+  <p>Built with ❤️ &nbsp;·&nbsp; <span>15 Machine Learning Projects</span> &nbsp;·&nbsp; Python · TensorFlow · Scikit-learn · OpenCV</p>
+</footer>
+
+<script>
+  function filter(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.card').forEach(card => {
+      if (cat === 'all') {
+        card.classList.remove('hidden');
+      } else {
+        const cats = (card.dataset.cats || '').split(' ');
+        card.classList.toggle('hidden', !cats.includes(cat));
+      }
+    });
+  }
+</script>
+</body>
+</html>
